@@ -2,24 +2,43 @@
 // import ViewDirectorBasedOnUserAuthStatus from '../utils/viewDirector';
 import 'bootstrap'; // import bootstrap elements and js
 import '../styles/main.scss';
+import getAJoke from '../api/promises';
 
-const init = () => {
-  document.querySelector('#app').innerHTML = `
-    <h1>HELLO! You are up and running!</h1>
-    <small>Open your dev tools</small><br />
-    <button class="btn btn-danger" id="click-me">Click ME!</button><br />
-    <hr />
-    <h2>These are font awesome icons:</h2>
-    <i class="fas fa-user fa-4x"></i> <i class="fab fa-github-square fa-5x"></i>
-  `;
-  console.warn('YOU ARE UP AND RUNNING!');
+// created seperate divs for the joke and punchline
+const htmlStructure = () => {
+  document.querySelector('#jokeDiv').innerHTML = `
+    <h3>JOKE GENERATOR</h3>
+    <button class="btn btn-warning" id="get-joke">GET A JOKE</button>
+    <p id="joke-setup"></p>
+    <p id="joke-punchline"></p>`;
 
-  document
-    .querySelector('#click-me')
-    .addEventListener('click', () => console.warn('You clicked that button!'));
-
-  // USE WITH FIREBASE AUTH
-  // ViewDirectorBasedOnUserAuthStatus();
+  // use .innerHTML to insert the joke/punchline
+  // use .innerText to change the button text
+  let thisJokeHits;
+  document.querySelector('#get-joke').addEventListener('click', () => {
+  // get the button text to change and print a joke
+    console.warn(document.querySelector('#get-joke').innerText);
+    if (document.querySelector('#get-joke').innerText === 'GET A JOKE' || document.querySelector('#get-joke').innerText === 'GET ANOTHER JOKE') {
+      getAJoke().then((joke) => {
+        document.querySelector('#joke-setup').innerHTML = joke.setup;
+        thisJokeHits = joke;
+        document.querySelector('#joke-punchline').innerHTML = '';
+        document.querySelector('#get-joke').innerText = 'GET PUNCHLINE';
+      });
+    // and then a punchline
+    } else if (document.querySelector('#get-joke').innerText === 'GET PUNCHLINE') {
+      document.querySelector('#joke-punchline').innerHTML = thisJokeHits.delivery;
+      document.querySelector('#get-joke').innerText = 'GET ANOTHER JOKE';
+    } else {
+      document.querySelector('#joke-setup').innerHTML = '';
+      document.querySelector('#joke-punchline').innerHTML = '';
+      document.querySelector('#get-joke').innerText = 'GET ANOTHER JOKE';
+    }
+  });
 };
 
-init();
+const startApp = () => {
+  htmlStructure();
+};
+
+startApp();
