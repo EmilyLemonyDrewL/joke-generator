@@ -7,8 +7,8 @@ import getAJoke from '../api/promises';
 // created seperate divs for the joke and punchline
 const htmlStructure = () => {
   document.querySelector('#jokeDiv').innerHTML = `
-    <h3>JOKE GENERATOR</h3>
-    <button class="btn btn-warning" id="get-joke">GET A JOKE</button>
+    <h3>BUBBLEGUM'S SPOOKY JOKE GENERATOR</h3>
+    <button class="btn btn-success" id="get-joke">GET A JOKE</button>
     <p id="joke-setup"></p>
     <p id="joke-punchline"></p>`;
 
